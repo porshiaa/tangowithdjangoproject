@@ -11,7 +11,7 @@ def index(request):
 
 
 def about(request):
-    return HttpResponse("Rango says, here is the about page. <br><a href='/rango'>Go back to index</a>")
+    return render(request, 'rango/about.html')
 
 
 def show_category(request, category_name_slug):
