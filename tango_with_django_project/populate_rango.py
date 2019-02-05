@@ -7,6 +7,8 @@ django.setup()
 from rango.models import Category, Page
 
 
+def populate():
+
     python_pages = [
     {"title": "Official Python Tutorial",
     "url":"http://docs.python.org/2/tutorial/"},
@@ -14,6 +16,8 @@ from rango.models import Category, Page
     "url":"http://www.greenteapress.com/thinkpython/"},
     {"title":"Learn Python in 10 Minutes",
      "url":"http://www.korokithakis.net/tutorials/python/"} ]
+
+    python_cat = add_cat('Python', views=128, likes=64)
 
     django_pages = [
     {"title":"Official Django Tutorial",
@@ -23,11 +27,15 @@ from rango.models import Category, Page
     {"title":"How to Tango with Django",
      "url":"http://www.tangowithdjango.com/"} ]
 
+    django_cat = add_cat('Django', views=64, likes=32)
+
     other_pages = [
     {"title":"Bottle",
      "url":"http://bottlepy.org/docs/dev/"},
     {"title":"Flask",
      "url":"http://flask.pocoo.org"} ]
+
+    other_cat = add_cat("Other", views=32, likes=16)
 
     cats = {"Python": {"pages": python_pages, "views": 128, "likes": 64},
             "Django": {"pages": django_pages, "views": 64, "likes": 32},
@@ -51,10 +59,8 @@ def add_page(cat, title, url, views=0):
     p.save()
     return p
 
-def add_cat(name, views, likes):
+def add_cat(name, views=0, likes=0):
     c = Category.objects.get_or_create(name=name, views=views, likes=likes)[0]
-    c.views = views
-    c.likes = likes
     c.save()
     return c
 
