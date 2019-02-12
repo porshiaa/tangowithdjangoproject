@@ -19,10 +19,10 @@ def index(request):
     category_list = Category.objects.order_by('-likes')[:5]
     page_list = Page.objects.order_by('-views')[:5]
     context_dict = {'categories': category_list, 'pages': page_list}
-    response = render(request, 'rango/index.html', context_dict)
 # Call the helper function to handle the cookies
     visitor_cookie_handler(request)
     context_dict['visits'] = request.session['visits']
+    response = render(request, 'rango/index.html', context_dict)
 # Return response back to the user, updating any cookies that need changed.
     return response
 
@@ -33,8 +33,8 @@ def about(request):
         request.session.delete_test_cookie()
 
     visitor_cookie_handler(request)
-    print(request.session['visits'])
-    return render(request, 'rango/about.html')
+    context_dict = {'visits': request.session['visits']}
+    return render(request, 'rango/about.html', context_dict)
 
 
 def show_category(request, category_name_slug):
@@ -54,6 +54,7 @@ def show_category(request, category_name_slug):
     return render(request, 'rango/category.html', context_dict)
 
 
+@login_required
 def add_category(request):
     form = CategoryForm()
 # A HTTP POST?
@@ -79,6 +80,7 @@ def add_category(request):
     return render(request, 'rango/add_category.html', {'form': form})
 
 
+@login_required
 def add_page(request, category_name_slug):
     try:
         category = Category.objects.get(slug=category_name_slug)
