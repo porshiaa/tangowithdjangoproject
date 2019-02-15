@@ -13,7 +13,6 @@ from django.contrib.auth import logout
 from datetime import datetime
 
 
-
 def index(request):
     request.session.set_test_cookie()
     category_list = Category.objects.order_by('-likes')[:5]
@@ -22,6 +21,7 @@ def index(request):
 # Call the helper function to handle the cookies
     visitor_cookie_handler(request)
     context_dict['visits'] = request.session['visits']
+    context_dict['last_visit'] = request.session['last_visit']
     response = render(request, 'rango/index.html', context_dict)
 # Return response back to the user, updating any cookies that need changed.
     return response
